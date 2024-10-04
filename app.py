@@ -15,10 +15,6 @@ def main():
     # Загрузка данных
     data = load_data()
 
-    # Отображение данных в табличном виде
-    st.subheader("Данные пассажиров")
-    st.dataframe(data)
-
     # Фильтрация данных для мужчин
     male_data = data[data["Sex"] == "male"]
 
@@ -30,11 +26,25 @@ def main():
     max_fare = male_data["Fare"].max()
     avg_fare = male_data["Fare"].mean()
 
-    # Отображение результатов
+    # Добавление картинки перед заголовком
+    st.image("titanic.jpg", caption="Titanic", use_column_width=True)
+
+    # Добавление селектора для выбора статистики
+    fare_option = st.selectbox(
+        "Выберите статистику цены билета:", ["Минимальная", "Максимальная", "Средняя"]
+    )
+
+    # Отображение результатов в зависимости от выбора
     st.subheader("Статистика цен билетов для мужчин")
-    st.write(f"Минимальная цена билета: {min_fare}")
-    st.write(f"Максимальная цена билета: {max_fare}")
-    st.write(f"Средняя цена билета: {avg_fare:.2f}")
+    if fare_option == "Минимальная":
+        st.write(f"Минимальная цена билета: {min_fare}")
+        st.dataframe(male_data[male_data["Fare"] == min_fare])
+    elif fare_option == "Максимальная":
+        st.write(f"Максимальная цена билета: {max_fare}")
+        st.dataframe(male_data[male_data["Fare"] == max_fare])
+    elif fare_option == "Средняя":
+        st.write(f"Средняя цена билета: {avg_fare:.2f}")
+        st.dataframe(male_data)
 
 
 if __name__ == "__main__":
