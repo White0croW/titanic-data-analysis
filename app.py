@@ -41,22 +41,32 @@ def main():
     st.subheader("Статистика цен билетов для мужчин")
     if fare_option == "Минимальная":
         st.write(f"Минимальная цена билета: {min_fare_male}")
-        st.dataframe(male_data[male_data["Fare"] == min_fare_male])
+        st.dataframe(male_data[male_data["Fare"] == min_fare_male][["Sex", "Fare"]])
     elif fare_option == "Максимальная":
         st.write(f"Максимальная цена билета: {max_fare_male}")
-        st.dataframe(male_data[male_data["Fare"] == max_fare_male])
+        st.dataframe(male_data[male_data["Fare"] == max_fare_male][["Sex", "Fare"]])
     elif fare_option == "Средняя":
         st.write(f"Средняя цена билета: {avg_fare_male:.2f}")
+        avg_fare_df_male = pd.DataFrame({"Sex": ["male"], "Fare": [avg_fare_male]})
+        st.dataframe(avg_fare_df_male)
 
     st.subheader("Статистика цен билетов для женщин")
     if fare_option == "Минимальная":
         st.write(f"Минимальная цена билета: {min_fare_female}")
-        st.dataframe(female_data[female_data["Fare"] == min_fare_female])
+        st.dataframe(
+            female_data[female_data["Fare"] == min_fare_female][["Sex", "Fare"]]
+        )
     elif fare_option == "Максимальная":
         st.write(f"Максимальная цена билета: {max_fare_female}")
-        st.dataframe(female_data[female_data["Fare"] == max_fare_female])
+        st.dataframe(
+            female_data[female_data["Fare"] == max_fare_female][["Sex", "Fare"]]
+        )
     elif fare_option == "Средняя":
         st.write(f"Средняя цена билета: {avg_fare_female:.2f}")
+        avg_fare_df_female = pd.DataFrame(
+            {"Sex": ["female"], "Fare": [avg_fare_female]}
+        )
+        st.dataframe(avg_fare_df_female)
 
 
 if __name__ == "__main__":
