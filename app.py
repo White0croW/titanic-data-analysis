@@ -44,7 +44,6 @@ def main():
         st.dataframe(male_data[male_data["Fare"] == max_fare])
     elif fare_option == "Средняя":
         st.write(f"Средняя цена билета: {avg_fare:.2f}")
-        st.dataframe(male_data[male_data["Fare"] == avg_fare])
 
 
 if __name__ == "__main__":
