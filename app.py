@@ -1,5 +1,43 @@
 import streamlit as st
 import pandas as pd
+from transformers import BlipProcessor, BlipForConditionalGeneration
+from PIL import Image
+from io import BytesIO
+import requests
+
+# Загрузка модели и процессора
+processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
+model = BlipForConditionalGeneration.from_pretrained(
+    "Salesforce/blip-image-captioning-base"
+)
+
+
+# Функция для обработки загруженных файлов
+def process_uploaded_files(uploaded_file):
+    # Открытие загруженного изображения
+    image = Image.open(uploaded_file)
+
+    # Проверка формата изображения и преобразование в PNG, если необходимо
+    if image.format.lower() not in ["png", "jpeg", "jpg"]:
+        image = image.convert("RGB")
+        image_bytes = BytesIO()
+        image.save(image_bytes, format="PNG")
+        image_bytes.seek(0)
+        image = Image.open(image_bytes)
+
+    # Подготовка изображения для модели
+    inputs = processor(images=image, return_tensors="pt")
+
+    # Генерация описания
+    outputs = model.generate(**inputs)
+    caption = processor.decode(outputs[0], skip_special_tokens=True)
+
+    # Сохранение изображения в буфер для отображения
+    image_bytes = BytesIO()
+    image.save(image_bytes, format="PNG")
+    image_bytes.seek(0)
+
+    return image_bytes, caption
 
 
 # Загрузка данных
@@ -10,6 +48,22 @@ def load_data():
 
 # Основная функция приложения
 def main():
+
+    st.title("Генерация описания для картинок")
+
+    # Загрузка изображения
+    uploaded_file = st.file_uploader(
+        "Загрузите изображение", type=["png", "jpg", "jpeg"]
+    )
+
+    if uploaded_file is not None:
+        # Обработка загруженного файла
+        image_bytes, caption = process_uploaded_files(uploaded_file)
+
+        # Отображение изображения и описания
+        st.image(image_bytes, caption="Загруженное изображение", use_column_width=True)
+        st.write(f"Сгенерированное описание: {caption}")
+
     st.title("Анализ данных пассажиров Титаника")
 
     # Загрузка данных
