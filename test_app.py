@@ -1,5 +1,7 @@
+from io import BytesIO
 import pytest
 import pandas as pd
+from app import process_uploaded_files, load_data
 from func import (
     find_min_fare,
     find_max_fare,
@@ -7,7 +9,7 @@ from func import (
 )
 
 # Тестовые данные
-test_csv_path = "/test_titanic_train.csv"
+test_csv_path = "test_titanic_train.csv"
 
 
 # Фикстуры для тестирования
