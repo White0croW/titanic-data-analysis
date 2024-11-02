@@ -10,6 +10,8 @@ from func import (
 
 # Тестовые данные
 test_csv_path = "test_titanic_train.csv"
+test_image = "titanic.jpg"
+test_csv_path = "test_titanic_train.csv"
 
 
 # Фикстуры для тестирования
@@ -84,20 +86,3 @@ def test_load_data(test_csv):
 
     # Проверка, что данные совпадают с тестовыми данными
     pd.testing.assert_frame_equal(data, test_csv)
-
-
-# Тесты для обработки ошибок
-def test_load_data_file_not_found():
-    # Переопределение функции load_data для тестирования ошибки
-    def load_data():
-        try:
-            data = pd.read_csv("nonexistent_file.csv")
-            return data
-        except FileNotFoundError:
-            return None
-
-    # Вызов функции
-    data = load_data()
-
-    # Проверка, что результат является None
-    assert data is None
