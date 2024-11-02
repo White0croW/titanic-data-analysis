@@ -1,9 +1,13 @@
 import streamlit as st
-import pandas as pd
 from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 from io import BytesIO
-import requests
+import pandas as pd
+from func import (
+    find_min_fare,
+    find_max_fare,
+    find_avg_fare,
+)
 
 # Загрузка модели и процессора
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
@@ -93,14 +97,14 @@ def main():
         female_data = data[data["Sex"] == "female"].dropna(subset=["Fare"])
 
         # Нахождение минимальной, максимальной и средней цены билета для мужчин
-        min_fare_male = male_data["Fare"].min()
-        max_fare_male = male_data["Fare"].max()
-        avg_fare_male = male_data["Fare"].mean()
+        min_fare_male = find_min_fare(male_data)
+        max_fare_male = find_max_fare(male_data)
+        avg_fare_male = find_avg_fare(male_data)
 
         # Нахождение минимальной, максимальной и средней цены билета для женщин
-        min_fare_female = female_data["Fare"].min()
-        max_fare_female = female_data["Fare"].max()
-        avg_fare_female = female_data["Fare"].mean()
+        min_fare_female = find_min_fare(female_data)
+        max_fare_female = find_max_fare(female_data)
+        avg_fare_female = find_avg_fare(female_data)
 
         # Отображение результатов в зависимости от выбора
         st.subheader("Статистика цен билетов для мужчин")
