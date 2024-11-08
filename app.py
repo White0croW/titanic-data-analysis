@@ -15,6 +15,9 @@ model = BlipForConditionalGeneration.from_pretrained(
     "Salesforce/blip-image-captioning-base"
 )
 
+# Настройка параметров процессора
+processor.clean_up_tokenization_spaces = True
+
 
 # Функция для обработки загруженных файлов
 def process_uploaded_files(uploaded_file):
