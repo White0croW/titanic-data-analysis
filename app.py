@@ -79,7 +79,7 @@ def main():
         st.image(image_bytes, caption="Загруженное изображение", use_column_width=True)
         st.write(f"Сгенерированное описание: {caption}")
 
-    st.title("Анализ данных пассажиров Титаника")
+    # st.title("Анализ данных пассажиров Титаника")
 
     # # Загрузка данных
     # data = load_data()
