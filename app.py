@@ -3,12 +3,12 @@ from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 from io import BytesIO
 
-# import pandas as pd
-from func import (
-    find_min_fare,
-    find_max_fare,
-    find_avg_fare,
-)
+# # import pandas as pd
+# from func import (
+#     find_min_fare,
+#     find_max_fare,
+#     find_avg_fare,
+# )
 
 # Загрузка модели и процессора
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
