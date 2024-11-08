@@ -2,7 +2,8 @@ import streamlit as st
 from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 from io import BytesIO
-import pandas as pd
+
+# import pandas as pd
 from func import (
     find_min_fare,
     find_max_fare,
@@ -49,16 +50,16 @@ def process_uploaded_files(uploaded_file):
     return image_bytes, caption
 
 
-# Загрузка данных
-def load_data():
-    try:
-        data = pd.read_csv("titanic_train.csv")
-        return data
-    except FileNotFoundError:
-        st.error(
-            "Файл titanic_train.csv не найден. Пожалуйста, убедитесь, что файл существует."
-        )
-        return None
+# # Загрузка данных
+# def load_data():
+#     try:
+#         data = pd.read_csv("titanic_train.csv")
+#         return data
+#     except FileNotFoundError:
+#         st.error(
+#             "Файл titanic_train.csv не найден. Пожалуйста, убедитесь, что файл существует."
+#         )
+#         return None
 
 
 # Основная функция приложения
@@ -80,67 +81,67 @@ def main():
 
     st.title("Анализ данных пассажиров Титаника")
 
-    # Загрузка данных
-    data = load_data()
-    if data is not None:
-        # Добавление картинки перед заголовком
-        try:
-            st.image("titanic.jpg", caption="Titanic", use_column_width=True)
-        except FileNotFoundError:
-            st.error(
-                "Изображение titanic.jpg не найдено. Пожалуйста, убедитесь, что файл существует."
-            )
+    # # Загрузка данных
+    # data = load_data()
+    # if data is not None:
+    #     # Добавление картинки перед заголовком
+    #     try:
+    #         st.image("titanic.jpg", caption="Titanic", use_column_width=True)
+    #     except FileNotFoundError:
+    #         st.error(
+    #             "Изображение titanic.jpg не найдено. Пожалуйста, убедитесь, что файл существует."
+    #         )
 
-        # Добавление селектора для выбора статистики
-        fare_option = st.selectbox(
-            "Выберите статистику цены билета:",
-            ["Минимальная", "Максимальная", "Средняя"],
-        )
+    #     # Добавление селектора для выбора статистики
+    #     fare_option = st.selectbox(
+    #         "Выберите статистику цены билета:",
+    #         ["Минимальная", "Максимальная", "Средняя"],
+    #     )
 
-        # Фильтрация данных для мужчин и женщин
-        male_data = data[data["Sex"] == "male"].dropna(subset=["Fare"])
-        female_data = data[data["Sex"] == "female"].dropna(subset=["Fare"])
+    #     # Фильтрация данных для мужчин и женщин
+    #     male_data = data[data["Sex"] == "male"].dropna(subset=["Fare"])
+    #     female_data = data[data["Sex"] == "female"].dropna(subset=["Fare"])
 
-        # Нахождение минимальной, максимальной и средней цены билета для мужчин
-        min_fare_male = find_min_fare(male_data)
-        max_fare_male = find_max_fare(male_data)
-        avg_fare_male = find_avg_fare(male_data)
+    #     # Нахождение минимальной, максимальной и средней цены билета для мужчин
+    #     min_fare_male = find_min_fare(male_data)
+    #     max_fare_male = find_max_fare(male_data)
+    #     avg_fare_male = find_avg_fare(male_data)
 
-        # Нахождение минимальной, максимальной и средней цены билета для женщин
-        min_fare_female = find_min_fare(female_data)
-        max_fare_female = find_max_fare(female_data)
-        avg_fare_female = find_avg_fare(female_data)
+    #     # Нахождение минимальной, максимальной и средней цены билета для женщин
+    #     min_fare_female = find_min_fare(female_data)
+    #     max_fare_female = find_max_fare(female_data)
+    #     avg_fare_female = find_avg_fare(female_data)
 
-        # Отображение результатов в зависимости от выбора
-        st.subheader("Статистика цен билетов для мужчин")
-        if fare_option == "Минимальная":
-            st.write(f"Минимальная цена билета: {min_fare_male}")
-            st.dataframe(male_data[male_data["Fare"] == min_fare_male][["Sex", "Fare"]])
-        elif fare_option == "Максимальная":
-            st.write(f"Максимальная цена билета: {max_fare_male}")
-            st.dataframe(male_data[male_data["Fare"] == max_fare_male][["Sex", "Fare"]])
-        elif fare_option == "Средняя":
-            st.write(f"Средняя цена билета: {avg_fare_male:.2f}")
-            avg_fare_df_male = pd.DataFrame({"Sex": ["male"], "Fare": [avg_fare_male]})
-            st.dataframe(avg_fare_df_male)
+    #     # Отображение результатов в зависимости от выбора
+    #     st.subheader("Статистика цен билетов для мужчин")
+    #     if fare_option == "Минимальная":
+    #         st.write(f"Минимальная цена билета: {min_fare_male}")
+    #         st.dataframe(male_data[male_data["Fare"] == min_fare_male][["Sex", "Fare"]])
+    #     elif fare_option == "Максимальная":
+    #         st.write(f"Максимальная цена билета: {max_fare_male}")
+    #         st.dataframe(male_data[male_data["Fare"] == max_fare_male][["Sex", "Fare"]])
+    #     elif fare_option == "Средняя":
+    #         st.write(f"Средняя цена билета: {avg_fare_male:.2f}")
+    #         avg_fare_df_male = pd.DataFrame({"Sex": ["male"], "Fare": [avg_fare_male]})
+    #         st.dataframe(avg_fare_df_male)
 
-        st.subheader("Статистика цен билетов для женщин")
-        if fare_option == "Минимальная":
-            st.write(f"Минимальная цена билета: {min_fare_female}")
-            st.dataframe(
-                female_data[female_data["Fare"] == min_fare_female][["Sex", "Fare"]]
-            )
-        elif fare_option == "Максимальная":
-            st.write(f"Максимальная цена билета: {max_fare_female}")
-            st.dataframe(
-                female_data[female_data["Fare"] == max_fare_female][["Sex", "Fare"]]
-            )
-        elif fare_option == "Средняя":
-            st.write(f"Средняя цена билета: {avg_fare_female:.2f}")
-            avg_fare_df_female = pd.DataFrame(
-                {"Sex": ["female"], "Fare": [avg_fare_female]}
-            )
-            st.dataframe(avg_fare_df_female)
+    #     st.subheader("Статистика цен билетов для женщин")
+    #     if fare_option == "Минимальная":
+    #         st.write(f"Минимальная цена билета: {min_fare_female}")
+    #         st.dataframe(
+    #             female_data[female_data["Fare"] == min_fare_female][["Sex", "Fare"]]
+    #         )
+    #     elif fare_option == "Максимальная":
+    #         st.write(f"Максимальная цена билета: {max_fare_female}")
+    #         st.dataframe(
+    #             female_data[female_data["Fare"] == max_fare_female][["Sex", "Fare"]]
+    #         )
+    #     elif fare_option == "Средняя":
+    #         st.write(f"Средняя цена билета: {avg_fare_female:.2f}")
+    #         avg_fare_df_female = pd.DataFrame(
+    #             {"Sex": ["female"], "Fare": [avg_fare_female]}
+    #         )
+    #         st.dataframe(avg_fare_df_female)
 
 
 if __name__ == "__main__":
