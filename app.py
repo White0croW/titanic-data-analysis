@@ -69,10 +69,12 @@ def start_api_server():
     return api_process
 
 
+# Запуск API сервера
+api_process = start_api_server()
+
+
 # Основная функция приложения
 def main():
-    # Запуск API сервера
-    api_process = start_api_server()
 
     st.title("Генерация описания для картинок")
 
