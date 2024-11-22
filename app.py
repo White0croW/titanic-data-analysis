@@ -1,4 +1,6 @@
 import streamlit as st
+import subprocess
+import time
 from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 from io import BytesIO
@@ -60,10 +62,18 @@ def process_uploaded_files(uploaded_file):
 #             "Файл titanic_train.csv не найден. Пожалуйста, убедитесь, что файл существует."
 #         )
 #         return None
+# Функция для запуска API сервера
+def start_api_server():
+    api_process = subprocess.Popen(["uvicorn", "api.main:app", "--reload"])
+    time.sleep(5)  # Дайте серверу время для запуска
+    return api_process
 
 
 # Основная функция приложения
 def main():
+    # Запуск API сервера
+    api_process = start_api_server()
+
     st.title("Генерация описания для картинок")
 
     # Загрузка изображения
